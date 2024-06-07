@@ -9,37 +9,53 @@ namespace MooGame
 
         public static void Main(string[] args)
         {
-
+            UI _console = new UI();
             bool playOn = true;
-            Console.WriteLine("Enter your user name:\n");
+            bool practice = false;
+            _console.Write("Enter your user name:\n");
             string name = Console.ReadLine();
 
             while (playOn)
             {
                 string goal = makeGoal();
 
-
-                Console.WriteLine("New game:\n");
-                //comment out or remove next line to play real games!
-                Console.WriteLine("For practice, number is: " + goal + "\n");
+                _console.Write("New game:\n");
+                while(true)
+                {
+                    _console.Write("Do you want to practice? Y/N");
+                    string practiceAnswer = _console.PromptYesNo();
+                    if(practiceAnswer.ToUpper() == "Y")
+                    {
+                        practice = true;
+                        _console.Write("For practice, number is: " + goal + "\n");
+                        break;
+                    }
+                    else if(practiceAnswer.ToUpper() == "N")
+                    {
+                        practice= false;
+                        _console.Write("Real game");
+                        break;
+                    }
+                }
+                _console.Write("Make a guess!");
                 string guess = Console.ReadLine();
 
                 int nGuess = 1;
                 string bbcc = checkBC(goal, guess);
-                Console.WriteLine(bbcc + "\n");
+                _console.Write("Result: " + bbcc + "\n");
                 while (bbcc != "BBBB,")
                 {
                     nGuess++;
                     guess = Console.ReadLine();
-                    Console.WriteLine(guess + "\n");
+                    _console.Write("Your guess: " + guess + "\n");
                     bbcc = checkBC(goal, guess);
-                    Console.WriteLine(bbcc + "\n");
+                    _console.Write("Result: " + bbcc + "\n");
                 }
                 StreamWriter output = new StreamWriter("result.txt", append: true);
                 output.WriteLine(name + "#&#" + nGuess);
                 output.Close();
                 showTopList();
-                Console.WriteLine("Correct, it took " + nGuess + " guesses\nContinue?");
+                _console.Write("Correct, it took " + nGuess + " guesses\nContinue?");
                 string answer = Console.ReadLine();
                 if (answer != null && answer != "" && answer.Substring(0, 1) == "n")
                 {
