@@ -12,9 +12,13 @@ internal class UI
     {
         return Console.ReadLine();
     }
-    public void Write(string text)
+    public void WriteLine(string text)
     { 
         Console.WriteLine(text);
+    }
+    public void Write(string text)
+    {
+        Console.Write(text);
     }
     public string PromptYesNo() // vår coola grej
     {

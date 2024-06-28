@@ -6,56 +6,55 @@ namespace MooGame
 {
     class MainClass
     {
-
         public static void Main(string[] args)
         {
             UI _console = new UI();
             bool playOn = true;
             bool practice = false;
-            _console.Write("Enter your user name:\n");
+            _console.WriteLine("Enter your user name:\n");
             string name = Console.ReadLine();
 
             while (playOn)
             {
                 string goal = makeGoal();
 
-                _console.Write("New game:\n");
+                _console.WriteLine("New game:\n");
                 while(true)
                 {
-                    _console.Write("Do you want to practice? Y/N");
+                    _console.WriteLine("Do you want to practice? Y/N");
                     string practiceAnswer = _console.PromptYesNo();
                     if(practiceAnswer.ToUpper() == "Y")
                     {
                         practice = true;
-                        _console.Write("For practice, number is: " + goal + "\n");
+                        _console.WriteLine("For practice, number is: " + goal + "\n");
                         break;
                     }
                     else if(practiceAnswer.ToUpper() == "N")
                     {
                         practice= false;
-                        _console.Write("Real game");
+                        _console.WriteLine("Real game");
                         break;
                     }
                 }
-                _console.Write("Make a guess!");
+                _console.WriteLine("Make a guess!");
                 string guess = Console.ReadLine();
 
                 int nGuess = 1;
                 string bbcc = checkBC(goal, guess);
-                _console.Write("Result: " + bbcc + "\n");
+                _console.WriteLine("Result: " + bbcc + "\n");
                 while (bbcc != "BBBB,")
                 {
                     nGuess++;
+                    _console.Write("Your guess: ");
                     guess = Console.ReadLine();
-                    _console.Write("Your guess: " + guess + "\n");
                     bbcc = checkBC(goal, guess);
-                    _console.Write("Result: " + bbcc + "\n");
+                    _console.WriteLine("Result: " + bbcc + "\n");
                 }
                 StreamWriter output = new StreamWriter("result.txt", append: true);
                 output.WriteLine(name + "#&#" + nGuess);
                 output.Close();
                 showTopList();
-                _console.Write("Correct, it took " + nGuess + " guesses\nContinue?");
+                _console.WriteLine("Correct, it took " + nGuess + " guesses\nContinue?");
                 string answer = Console.ReadLine();
                 if (answer != null && answer != "" && answer.Substring(0, 1) == "n")
                 {
@@ -89,7 +88,9 @@ namespace MooGame
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    if (goal[i] == guess[j])
+                    char iGoal = goal[i];
+                    char jGuess = guess[j];
+                    if (iGoal == jGuess)
                     {
                         if (i == j)
                         {
