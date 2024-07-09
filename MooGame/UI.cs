@@ -20,7 +20,7 @@ internal class UI
     {
         Console.Write(text);
     }
-    public string PromptYesNo() // vår coola grej
+    public string PromptYesNo() // our cool thing
     {
         string answer = "";
 
@@ -32,12 +32,18 @@ internal class UI
 
             answer = Console.ReadLine();
 
-            if (answer.ToUpper() == "Y")
+            if (answer.ToUpper() == "Y" || answer.ToUpper() == "YES")
             {
                 break;
             }
-            else if (answer.ToUpper() == "N")
+            else if (answer.ToUpper() == "N" || answer.ToUpper() == "NO")
             {
+                break;
+            }
+            else if (answer == "MOOOOO")
+            {
+                Console.Write("Welcome to the secret cow level!");
+                SecretCowLevel();
                 break;
             }
 
@@ -48,5 +54,29 @@ internal class UI
 
         return answer;
     }
+    public void SecretCowLevel()
+    {
+		string[] lines = new string[]
+		{
+			" ___________",
+			"| Hello World |",
+			"  ===========",
+			"           \\",
+			"            \\",
+			"              ^__^",
+			"              (oo)\\_______",
+			"              (__)\\       )\\/\\",
+			"                  ||----w |",
+			"                  ||     ||"
+		};
 
+		// Loop through each line and print it
+		foreach (string line in lines)
+		{
+			Console.WriteLine(line);
+		}
+	}
 }
+    
+
+
