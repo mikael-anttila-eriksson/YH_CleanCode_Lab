@@ -13,7 +13,6 @@ namespace MooGame
         {
 			UI _console = new UI();
 			bool playOn = true;
-			bool practice = false;
 			_console.WriteLine("Enter your user name:\n");
 			string name = Console.ReadLine();
 
@@ -26,8 +25,7 @@ namespace MooGame
 				_console.WriteLine("Do you want to practice? Y/N");
 				string practiceAnswer = _console.PromptYesNo();
 
-				practice = CheckYesNo(practiceAnswer);
-				if (practice)
+				if (CheckYesNo(practiceAnswer))
 				{
 					_console.WriteLine("For practice, number is: " + goal + "\n");
 				}
@@ -53,11 +51,10 @@ namespace MooGame
 				SavePlayerScore(name, nGuess);
 				ShowTopList();
 				_console.WriteLine("Correct, it took " + nGuess + " guesses\nContinue? Y/N");
-				string answer = Console.ReadLine();
+				string continueAnswer = _console.PromptYesNo();
 				
-				//Continue from here. Use PromptYesNO && CheckYesNo
 				
-				if (answer != null && answer != "" && answer.Substring(0, 1) == "n")
+				if (!CheckYesNo(continueAnswer))
 				{
 					playOn = false;
 				}
