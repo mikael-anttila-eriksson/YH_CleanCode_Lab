@@ -8,7 +8,8 @@ namespace MooGame
     {
         public static void Main(string[] args)
         {
-            MooGameController controller = new MooGameController();
+            UI console = new UI();
+            MooGameController controller = new MooGameController(console);
         }          
     }   
     

@@ -9,11 +9,12 @@ namespace MooGame
 {
     internal class MooGameController
     {
-        public MooGameController()
+		private UI _console;
+        public MooGameController(UI console)
         {
-			UI _console = new UI();
+			_console = console;
 			bool playOn = true;
-			_console.WriteLine("Enter your user name:\n");
+			_console.WriteLine("Enter your username:\n");
 			string name = Console.ReadLine();
 
 			while (playOn)
@@ -34,20 +35,8 @@ namespace MooGame
 					_console.WriteLine("Real game");
 				}
 
-				_console.WriteLine("Make a guess!");
-				string guess = Console.ReadLine();
-
-				int nGuess = 1;
-				string bbcc = CheckBC(goal, guess);
-				_console.WriteLine("Result: " + bbcc + "\n");
-				while (bbcc != "BBBB,")
-				{
-					nGuess++;
-					_console.Write("Your guess: ");
-					guess = Console.ReadLine();
-					bbcc = CheckBC(goal, guess);
-					_console.WriteLine("Result: " + bbcc + "\n");
-				}
+				int nGuess = GameTurn(goal);
+			
 				SavePlayerScore(name, nGuess);
 				ShowTopList();
 				_console.WriteLine("Correct, it took " + nGuess + " guesses\nContinue? Y/N");
@@ -68,14 +57,10 @@ namespace MooGame
 				if (answer.ToUpper() == "Y")
 				{
 					return true;
-					
-					break;
 				}
 				else if (answer.ToUpper() == "N")
 				{
 					return false;
-					
-					break;
 				}
 			}
 		}
@@ -85,9 +70,22 @@ namespace MooGame
 			output.WriteLine(name + "#&#" + nGuess);
 			output.Close();
 		}
-		private void Method3()
+		private int GameTurn(string goal)
 		{
+			_console.WriteLine("Make a guess!");			
 
+			int nGuess = 0;
+			string bbcc = string.Empty;
+			
+			while (bbcc != "BBBB,")
+			{
+				_console.Write("Your guess: ");
+				string guess = Console.ReadLine();
+				bbcc = CheckBC(goal, guess);
+				_console.WriteLine("Result: " + bbcc + "\n");
+				nGuess++;
+			}
+			return nGuess;
 		}
 		private void Method4()
 		{
