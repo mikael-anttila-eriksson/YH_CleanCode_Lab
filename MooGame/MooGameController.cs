@@ -18,16 +18,18 @@ namespace MooGame
     internal class MooGameController
     {
 		private UI _console;
+		private MooGame _mooGame;
         public MooGameController(UI console)
         {
 			_console = console;
+			_mooGame = new MooGame();
 			bool playOn = true;
 			_console.WriteLine("Enter your username:\n");
 			string name = Console.ReadLine();
 
 			while (playOn)
 			{
-				string goal = MakeGoal();
+				string correctAnswer = _mooGame.CreateCorrectAnswer();
 
 				_console.WriteLine("New game:\n");
 
@@ -36,14 +38,14 @@ namespace MooGame
 
 				if (CheckYesNo(practiceAnswer))
 				{
-					_console.WriteLine("For practice, number is: " + goal + "\n");
+					_console.WriteLine("For practice, number is: " + correctAnswer + "\n");
 				}
 				else 
 				{
 					_console.WriteLine("Real game");
 				}
 
-				int nGuess = GameTurn(goal);
+				int nGuess = GameTurn(correctAnswer);
 			
 				SavePlayerScore(name, nGuess);
 				ShowTopList();
@@ -78,7 +80,8 @@ namespace MooGame
 			output.WriteLine(name + "#&#" + nGuess);
 			output.Close();
 		}
-		private int GameTurn(string goal)
+		
+		private int GameTurn(string correctAnswer)
 		{
 			_console.WriteLine("Make a guess!");			
 
@@ -89,60 +92,12 @@ namespace MooGame
 			{
 				_console.Write("Your guess: ");
 				string guess = Console.ReadLine();
-				bbcc = CheckBC(goal, guess);
+				bbcc = EvaluateBullsCows(correctAnswer, guess);
 				_console.WriteLine("Result: " + bbcc + "\n");
 				nGuess++;
 			}
 			return nGuess;
-		}
-		private void Method4()
-		{
-
-		}
-		static string MakeGoal()
-		{
-			Random randomGenerator = new Random();
-			string goal = "";
-			for (int i = 0; i < 4; i++)
-			{
-				int random = randomGenerator.Next(10);
-				string randomDigit = "" + random;
-				while (goal.Contains(randomDigit))
-				{
-					random = randomGenerator.Next(10);
-					randomDigit = "" + random;
-				}
-				goal = goal + randomDigit;
-			}
-			return goal;
-		}
-
-		static string CheckBC(string goal, string guess)
-		{
-			int cows = 0, bulls = 0;
-			guess += "    ";     // if player entered less than 4 chars
-			for (int i = 0; i < 4; i++)
-			{
-				for (int j = 0; j < 4; j++)
-				{
-					char iGoal = goal[i];
-					char jGuess = guess[j];
-					if (iGoal == jGuess)
-					{
-						if (i == j)
-						{
-							bulls++;
-						}
-						else
-						{
-							cows++;
-						}
-					}
-				}
-			}
-			return "BBBB".Substring(0, bulls) + "," + "CCCC".Substring(0, cows);
-		}
-
+		}			
 
 		static void ShowTopList()
 		{
