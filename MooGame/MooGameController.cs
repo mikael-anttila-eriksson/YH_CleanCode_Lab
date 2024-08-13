@@ -88,16 +88,58 @@ namespace MooGame
 			int nGuess = 0;
 			string bbcc = string.Empty;
 			
-			while (bbcc != "BBBB,")
+			while (bbcc != "BBBB")
 			{
 				_console.Write("Your guess: ");
-				string guess = Console.ReadLine();
-				bbcc = EvaluateBullsCows(correctAnswer, guess);
-				_console.WriteLine("Result: " + bbcc + "\n");
-				nGuess++;
+				
+				string guess = Console.ReadLine();				
+				guess = guess.Replace(" ", string.Empty);	
+
+				if (ValidateGuess(guess) && IsUniqueDigits(guess))				
+				{
+					bbcc = _mooGame.EvaluateBullsCows(correctAnswer, guess); 
+					_console.WriteLine("Result: " + bbcc + "\n");
+					nGuess++;
+				}				
+				else
+				{
+					_console.WriteLine("Try again.");
+				}
 			}
 			return nGuess;
-		}			
+		}
+
+		private bool ValidateGuess(string guess)
+		{
+			if (string.IsNullOrEmpty(guess))
+			{
+				_console.WriteLine("You did not make a guess.");
+				return false;
+			}
+			if (guess.Length != 4)
+			{				
+				_console.WriteLine("Your guess must have a length of 4.");
+				return false;
+			}
+			if (!int.TryParse(guess, out _))
+			{
+				_console.WriteLine("Your guess must contain only digits.");
+				return false;
+			}
+			return true;
+		}
+		private bool IsUniqueDigits(string guess)
+		{
+			var uniqueDigits = guess.Distinct();
+			int count = uniqueDigits.Count();
+
+			if (uniqueDigits.Count() != 4)
+			{
+				_console.WriteLine("Each digit in your guess should be unique.");
+				return false;
+			}
+			return true;			
+		}
 
 		static void ShowTopList()
 		{
