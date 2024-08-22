@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
-namespace MooGame
+﻿namespace MooGame
 {
     /// <summary>
     /// The controller pattern defines a class or an object that handles the system events 
@@ -15,162 +8,150 @@ namespace MooGame
     /// receiving the user inputs, validating them, invoking the appropriate methods of 
     /// the domain model, and updating the UI accordingly.
     /// </summary>
-    internal class MooGameController
+    public class MooGameController
     {
-		private UI _console;
-		private MooGame _mooGame;
-        public MooGameController(UI console)
+        private UI _console;
+        private MooGame _mooGame;
+        public MooGameController(IUI console)
         {
-			_console = console;
-			_mooGame = new MooGame();
-			bool playOn = true;
-			_console.WriteLine("Enter your username:\n");
-			string name = Console.ReadLine();
+            _console = (UI?)console;
+            _mooGame = new MooGame();
+        }
 
-			while (playOn)
-			{
-				string correctAnswer = _mooGame.CreateCorrectAnswer();
+        public void Run()
+        {
+            bool playOn = true;
+            _console.WriteLine("Enter your username:\n");
+            string name = Console.ReadLine();
 
-				_console.WriteLine("New game:\n");
+            while (playOn)
+            {
+                string correctAnswer = _mooGame.CreateCorrectAnswer();
 
-				_console.WriteLine("Do you want to practice? Y/N");
-				string practiceAnswer = _console.PromptYesNo();
+                _console.WriteLine("New game:\n");
 
-				if (CheckYesNo(practiceAnswer))
-				{
-					_console.WriteLine("For practice, number is: " + correctAnswer + "\n");
-				}
-				else 
-				{
-					_console.WriteLine("Real game");
-				}
+                _console.WriteLine("Do you want to practice? Y/N");
 
-				int nGuess = GameTurn(correctAnswer);
-			
-				SavePlayerScore(name, nGuess);
-				ShowTopList();
-				_console.WriteLine("Correct, it took " + nGuess + " guesses\nContinue? Y/N");
-				string continueAnswer = _console.PromptYesNo();
-				
-				
-				if (!CheckYesNo(continueAnswer))
-				{
-					playOn = false;
-				}
-			}
-		}
-		private bool CheckYesNo(string answer)
-		{
-			while (true)
-			{
-				
-				if (answer.ToUpper() == "Y")
-				{
-					return true;
-				}
-				else if (answer.ToUpper() == "N")
-				{
-					return false;
-				}
-			}
-		}
-		private void SavePlayerScore(string name, int nGuess)
-		{
-			StreamWriter output = new StreamWriter("result.txt", append: true);
-			output.WriteLine(name + "#&#" + nGuess);
-			output.Close();
-		}
-		
-		private int GameTurn(string correctAnswer)
-		{
-			_console.WriteLine("Make a guess!");			
+                if (_console.PromptYesNo())
+                {
+                    _console.WriteLine("For practice, number is: " + correctAnswer + "\n");
+                }
+                else
+                {
+                    _console.WriteLine("Real game");
+                }
 
-			int nGuess = 0;
-			string bbcc = string.Empty;
-			
-			while (bbcc != "BBBB")
-			{
-				_console.Write("Your guess: ");
-				
-				string guess = Console.ReadLine();				
-				guess = guess.Replace(" ", string.Empty);	
+                int numGuesses = GameTurn(correctAnswer);
 
-				if (ValidateGuess(guess) && IsUniqueDigits(guess))				
-				{
-					bbcc = _mooGame.EvaluateBullsCows(correctAnswer, guess); 
-					_console.WriteLine("Result: " + bbcc + "\n");
-					nGuess++;
-				}				
-				else
-				{
-					_console.WriteLine("Try again.");
-				}
-			}
-			return nGuess;
-		}
+                SavePlayerScore(name, numGuesses);
+                ShowTopList();
+                _console.WriteLine("Correct, it took " + numGuesses + " guesses\nContinue? Y/N");
 
-		private bool ValidateGuess(string guess)
-		{
-			if (string.IsNullOrEmpty(guess))
-			{
-				_console.WriteLine("You did not make a guess.");
-				return false;
-			}
-			if (guess.Length != 4)
-			{				
-				_console.WriteLine("Your guess must have a length of 4.");
-				return false;
-			}
-			if (!int.TryParse(guess, out _))
-			{
-				_console.WriteLine("Your guess must contain only digits.");
-				return false;
-			}
-			return true;
-		}
-		private bool IsUniqueDigits(string guess)
-		{
-			var uniqueDigits = guess.Distinct();
-			int count = uniqueDigits.Count();
+                if (!_console.PromptYesNo())
+                {
+                    playOn = false;
+                }
+            }
+        }
 
-			if (uniqueDigits.Count() != 4)
-			{
-				_console.WriteLine("Each digit in your guess should be unique.");
-				return false;
-			}
-			return true;			
-		}
+        private void SavePlayerScore(string name, int numGuesses)
+        {
+            StreamWriter output = new StreamWriter("result.txt", append: true);
+            output.WriteLine(name + "#&#" + numGuesses);
+            output.Close();
+        }
 
-		static void ShowTopList()
-		{
-			StreamReader input = new StreamReader("result.txt");
-			List<PlayerData> results = new List<PlayerData>();
-			string line;
-			while ((line = input.ReadLine()) != null)
-			{
-				string[] nameAndScore = line.Split(new string[] { "#&#" }, StringSplitOptions.None);
-				string name = nameAndScore[0];
-				int guesses = Convert.ToInt32(nameAndScore[1]);
-				PlayerData pd = new PlayerData(name, guesses);
-				int pos = results.IndexOf(pd);
-				if (pos < 0)
-				{
-					results.Add(pd);
-				}
-				else
-				{
-					results[pos].Update(guesses);
-				}
+        private int GameTurn(string correctAnswer)
+        {
+            _console.WriteLine("Make a guess!");
+
+            int nGuess = 0;
+            string bbcc = string.Empty;
+
+            while (bbcc != "BBBB")
+            {
+                _console.Write("Your guess: ");
+
+                string guess = Console.ReadLine();
+                guess = guess.Replace(" ", string.Empty);
+
+                if (ValidateGuess(guess) && IsUniqueDigits(guess))
+                {
+                    bbcc = _mooGame.EvaluateBullsCows(correctAnswer, guess);
+                    _console.WriteLine("Result: " + bbcc + "\n");
+                    nGuess++;
+                }
+                else
+                {
+                    _console.WriteLine("Try again.");
+                }
+            }
+            return nGuess;
+        }
+
+        private bool ValidateGuess(string guess)
+        {
+            if (string.IsNullOrEmpty(guess))
+            {
+                _console.WriteLine("You did not make a guess.");
+                return false;
+            }
+            if (guess.Length != 4)
+            {
+                _console.WriteLine("Your guess must have a length of 4.");
+                return false;
+            }
+            if (!int.TryParse(guess, out _))
+            {
+                _console.WriteLine("Your guess must contain only digits.");
+                return false;
+            }
+            return true;
+        }
+        private bool IsUniqueDigits(string guess)
+        {
+            var uniqueDigits = guess.Distinct();
+            int count = uniqueDigits.Count();
+
+            if (uniqueDigits.Count() != 4)
+            {
+                _console.WriteLine("Each digit in your guess should be unique.");
+                return false;
+            }
+            return true;
+        }
+
+        static void ShowTopList()
+        {
+            StreamReader input = new StreamReader("result.txt");
+            List<PlayerData> results = new List<PlayerData>();
+            string line;
+            while ((line = input.ReadLine()) != null)
+            {
+                string[] nameAndScore = line.Split(new string[] { "#&#" }, StringSplitOptions.None);
+                string name = nameAndScore[0];
+                int guesses = Convert.ToInt32(nameAndScore[1]);
+                PlayerData playerData = new PlayerData(name, guesses);
+                int positionInList = results.IndexOf(playerData);
+                if (positionInList < 0)
+                {
+                    results.Add(playerData);
+                }
+                else
+                {
+                    results[positionInList].Update(guesses);
+                }
 
 
-			}
-			results.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
-			Console.WriteLine("Player   games average");
-			foreach (PlayerData p in results)
-			{
-				Console.WriteLine(string.Format("{0,-9}{1,5:D}{2,9:F2}", p.Name, p.NGames, p.Average()));
-			}
-			input.Close();
-		}
-	}
+            }
+            results.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
+            Console.WriteLine("Player   games average");
+            foreach (PlayerData p in results)
+            {
+                string str = string.Format("{0,-9}{1,5:D}{2,9:F2}", p.Name, p.NumGames, p.Average());
+                Console.WriteLine(str);
+            }
+            input.Close();
+        }
+    }
 }
