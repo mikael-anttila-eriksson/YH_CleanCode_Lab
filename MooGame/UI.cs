@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace MooGame;
 
-internal class UI
-{    
+public class UI : IUI
+{
     public string Read()
     {
         return Console.ReadLine();
     }
     public void WriteLine(string text)
-    { 
+    {
         Console.WriteLine(text);
     }
     public void Write(string text)
     {
         Console.Write(text);
     }
-    public string PromptYesNo() // our cool thing
+    public bool PromptYesNo() // our cool thing
     {
         string answer = "";
 
@@ -34,49 +34,47 @@ internal class UI
 
             if (answer.ToUpper() == "Y" || answer.ToUpper() == "YES")
             {
-                break;
+                return true;
             }
             else if (answer.ToUpper() == "N" || answer.ToUpper() == "NO")
             {
-                break;
+                return false;
             }
             else if (answer == "MOOOOO")
             {
                 Console.Write("Welcome to the secret cow level!");
                 SecretCowLevel();
-                break;
+                return false;
             }
 
             Console.SetCursorPosition(left, top);
             Console.Write(new string(' ', answer.Length));
             Console.SetCursorPosition(left, top);
         }
-
-        return answer;
     }
     public void SecretCowLevel()
     {
-		string[] lines = new string[]
-		{
-			" ___________",
-			"| Hello World |",
-			"  ===========",
-			"           \\",
-			"            \\",
-			"              ^__^",
-			"              (oo)\\_______",
-			"              (__)\\       )\\/\\",
-			"                  ||----w |",
-			"                  ||     ||"
-		};
+        string[] lines = new string[]
+        {
+            " ___________",
+            "| Hello World |",
+            "  ===========",
+            "           \\",
+            "            \\",
+            "              ^__^",
+            "              (oo)\\_______",
+            "              (__)\\       )\\/\\",
+            "                  ||----w |",
+            "                  ||     ||"
+        };
 
-		// Loop through each line and print it
-		foreach (string line in lines)
-		{
-			Console.WriteLine(line);
-		}
-	}
+        // Loop through each line and print it
+        foreach (string line in lines)
+        {
+            Console.WriteLine(line);
+        }
+    }
 }
-    
+
 
 
