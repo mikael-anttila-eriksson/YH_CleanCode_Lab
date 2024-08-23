@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-
-namespace MooGame
+﻿namespace MooGame
 {
     class MainClass
     {
@@ -10,6 +6,7 @@ namespace MooGame
         {
             UI console = new UI();
             MooGameController controller = new MooGameController(console);
+            controller.Run();
         }          
     }   
     
