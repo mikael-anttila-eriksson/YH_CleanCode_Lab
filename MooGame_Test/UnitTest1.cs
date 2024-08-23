@@ -11,7 +11,7 @@ namespace MooGame_Test
 			// Assert: Verify
 
 			// Arrange
-			MooGame.MooGame game = new();
+			MooGame.Buisiness.MooGame game = new();
 			
 			// Act
 			string answer = game.CreateCorrectAnswer();

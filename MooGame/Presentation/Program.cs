@@ -1,4 +1,6 @@
-﻿namespace MooGame
+﻿using MooGame.Buisiness;
+
+namespace MooGame.Presentation
 {
     class MainClass
     {
@@ -7,7 +9,7 @@
             UI console = new UI();
             MooGameController controller = new MooGameController(console);
             controller.Run();
-        }          
-    }   
-    
+        }
+    }
+
 }

@@ -1,4 +1,7 @@
-﻿namespace MooGame
+﻿using MooGame.Data;
+using MooGame.Presentation;
+
+namespace MooGame.Buisiness
 {
     /// <summary>
     /// The controller pattern defines a class or an object that handles the system events 

@@ -1,4 +1,4 @@
-﻿namespace MooGame
+﻿namespace MooGame.Presentation
 {
     public interface IUI
     {
