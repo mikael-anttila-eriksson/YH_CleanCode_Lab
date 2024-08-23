@@ -1,4 +1,4 @@
-﻿using MooGame.Buisiness;
+﻿using MooGame.Business;
 
 namespace MooGame.Presentation
 {

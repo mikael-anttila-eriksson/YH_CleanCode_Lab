@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MooGame.Buisiness
+namespace MooGame.Business
 {
     public class MooGame
     {
