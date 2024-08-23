@@ -12,6 +12,8 @@ namespace MooGame_Test
     public class MooGameTests
     {
         [TestMethod()]
+        [DataRow("1234", "k-38", "error")]
+        [DataRow("-234", "-138", "error")]
         [DataRow("1234", "2835", "BC")]
 		[DataRow("1234", "1234", "BBBB")]
         [DataRow("1234", "4321", "CCCC")]

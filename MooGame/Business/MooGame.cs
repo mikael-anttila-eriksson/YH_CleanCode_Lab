@@ -50,8 +50,14 @@ namespace MooGame.Business
             {
                 for (int positionToEvaluate = 0; positionToEvaluate < 4; positionToEvaluate++)
                 {
-                    char iGoal = correctAnswer[_position];
-                    char jGuess = guess[positionToEvaluate];
+                    int iGoal = 0;
+                    bool int1 = int.TryParse(correctAnswer[_position].ToString(), out iGoal);
+                    int jGuess = 0;
+                    bool int2 = int.TryParse(guess[positionToEvaluate].ToString(), out jGuess);
+                    if(!int1 || !int2)
+                    {
+                        return "error";
+                    }
                     if (iGoal == jGuess)
                     {
                         if (_position == positionToEvaluate)
