@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MooGame.Tests
+namespace MooGame_Test
 {
-    [TestClass()]
+	[TestClass()]
 	public class PlayerDataTests
 	{
 		[TestMethod()]

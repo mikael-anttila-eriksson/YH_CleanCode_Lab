@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MooGame;
 using MooGame.Business;
 using MooGame.Presentation;
 using System;
@@ -8,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MooGame.Tests
+namespace MooGame_Test
 {
 	[TestClass()]
 	public class MooGameControllerTests
