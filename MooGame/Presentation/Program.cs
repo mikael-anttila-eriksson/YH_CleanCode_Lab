@@ -6,7 +6,7 @@ namespace MooGame.Presentation
     {
         public static void Main(string[] args)
         {
-            UI console = new UI();
+            IUI console = new UI();
             MooGameController controller = new MooGameController(console);
             controller.Run();
         }

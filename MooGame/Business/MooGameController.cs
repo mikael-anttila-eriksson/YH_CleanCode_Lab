@@ -13,11 +13,11 @@ namespace MooGame.Business
     /// </summary>
     public class MooGameController
     {
-        private UI _console;
+        private IUI _console;
         private MooGame _mooGame;
         public MooGameController(IUI console)
         {
-            _console = (UI?)console;
+            _console = console;
             _mooGame = new MooGame();
         }
 
