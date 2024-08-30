@@ -13,47 +13,49 @@ namespace MooGame.Business
     /// </summary>
     public class MooGameController
     {
-        private IUI _console;
-        private MooGame _mooGame;
-        private FileManager _fileManager;
-        public MooGameController(IUI console)
+        private IUI _UiHandler;
+        private IMooGame _mooGame;
+        private IFileManger _fileManager;
+        private IRandom _randomGenerator;
+        public MooGameController(IUI uiHandler, IMooGame game, IFileManger manager, IRandom random)
         {
-            _console = console;
-            _mooGame = new MooGame();
-            _fileManager = new FileManager();
+            _UiHandler = uiHandler;
+            _mooGame = game;
+            _fileManager = manager;
+            _randomGenerator = random;
             //ReadData();
         }
 
         public void Run()
         {
             bool playOn = true;
-            _console.WriteLine("Enter your username:\n");
-            string name = _console.Read();
+            _UiHandler.WriteLine("Enter your username:\n");
+            string name = _UiHandler.ReadLine();
 
             while (playOn)
-            {
-                string correctAnswer = _mooGame.CreateCorrectAnswer();
+            {                
+                string correctAnswer = _mooGame.CreateCorrectAnswer(_randomGenerator);
 
-                _console.WriteLine("New game:\n");
+                _UiHandler.WriteLine("New game:\n");
 
-                _console.WriteLine("Do you want to practice? Y/N");
+                _UiHandler.WriteLine("Do you want to practice? Y/N");
 
-                if (_console.PromptYesNo())
+                if (_UiHandler.PromptYesNo())
                 {
-                    _console.WriteLine("For practice, number is: " + correctAnswer + "\n");
+                    _UiHandler.WriteLine("For practice, number is: " + correctAnswer + "\n");
                 }
                 else
                 {
-                    _console.WriteLine("Real game");
+                    _UiHandler.WriteLine("Real game");
                 }
 
                 int numGuesses = GameTurn(correctAnswer);
 
                 _fileManager.SavePlayerScore(name, numGuesses);
                 ShowTopList();
-                _console.WriteLine("Correct, it took " + numGuesses + " guesses\nContinue? Y/N");
+                _UiHandler.WriteLine("Correct, it took " + numGuesses + " guesses\nContinue? Y/N");
 
-                if (!_console.PromptYesNo())
+                if (!_UiHandler.PromptYesNo())
                 {
                     playOn = false;
                 }
@@ -62,27 +64,27 @@ namespace MooGame.Business
 
         private int GameTurn(string correctAnswer)
         {
-            _console.WriteLine("Make a guess!");
+            _UiHandler.WriteLine("Make a guess!");
 
             int nGuess = 0;
             string bbcc = string.Empty;
 
             while (bbcc != "BBBB")
             {
-                _console.Write("Your guess: ");
+                _UiHandler.Write("Your guess: ");
 
                 string guess = Console.ReadLine();
                 guess = guess.Replace(" ", string.Empty);                
                 if (_mooGame.ValidateInput(guess, out string message))
                 {
                     bbcc = _mooGame.EvaluateBullsCows(correctAnswer, guess);
-                    _console.WriteLine("Result: " + bbcc + "\n");
+                    _UiHandler.WriteLine("Result: " + bbcc + "\n");
                     nGuess++;
                 }
                 else
                 {
-                    _console.WriteLine(message);
-                    _console.WriteLine("Try again.");
+                    _UiHandler.WriteLine(message);
+                    _UiHandler.WriteLine("Try again.");
                 }
             }
             return nGuess;
@@ -121,11 +123,11 @@ namespace MooGame.Business
             }
             input.Close();
         }
-       
-  //      public List<PlayerData> Logic(List<PlayerData> players)
-  //      {
-		//	return players = players.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
-		//}
+
+        //public List<PlayerData> Logic(List<PlayerData> players)
+        //{
+        //    return players = players.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
+        //}
         public void ShowList(List<PlayerData> players)
         {
 			Console.WriteLine("Player   games average");

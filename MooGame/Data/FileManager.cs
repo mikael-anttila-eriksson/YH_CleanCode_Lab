@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MooGame.Data
 {
-	public class FileManager
+	public class FileManager : IFileManger
 	{
         public FileManager()
         {
@@ -18,7 +18,7 @@ namespace MooGame.Data
 			output.WriteLine(name + "," + numGuesses);
 			output.Close();
 		}
-		private List<PlayerData> ReadData()
+		public List<PlayerData> ReadData()
 		{
 			List<PlayerData> playerStatistics = new List<PlayerData>();
 			using (StreamReader reader = new StreamReader("result.txt"))
