@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MooGame.Business
 {
-    public class MooGame
+    public class MooGame : IMooGame
     {
         private const int START = 0;
         private const int END = 3;
@@ -23,17 +23,18 @@ namespace MooGame.Business
         {
 
         }
-        public string CreateCorrectAnswer()
+        public string CreateCorrectAnswer(IRandom randomGenerator)
         {
-            Random randomGenerator = new Random();
+            //Random randomGenerator = new Random();
+            int randomNumberBetween0to9 = 10;
             string correctAnswer = "";
             for (int i = 0; i < 4; i++)
             {
-                int random = randomGenerator.Next(10);
+                int random = randomGenerator.Next(randomNumberBetween0to9);
                 string randomDigit = "" + random;
                 while (correctAnswer.Contains(randomDigit))
                 {
-                    random = randomGenerator.Next(10);
+                    random = randomGenerator.Next(randomNumberBetween0to9);
                     randomDigit = "" + random;
                 }
                 correctAnswer = correctAnswer + randomDigit;

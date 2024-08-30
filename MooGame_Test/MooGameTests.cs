@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MooGame.Business;
+using MooGame_Test.Mocks;
 
 namespace MooGame_Test
 {
@@ -32,6 +33,43 @@ namespace MooGame_Test
 
             // Assert
             Assert.AreEqual(expectedOutput, actualOutput, "Incorrect evaluation.");
+        }
+        [TestMethod]
+        public void CreateCorrectAnswer_CheckLenght_Test()
+        {
+            // Arrange: Initialize the object to be tested
+            // Act: Act on the object --> call a method
+            // Assert: Verify
+
+            // Arrange
+            MooGame.Business.MooGame game = new();
+
+            // Act
+            IRandom randomGenerator = new MyRandom();
+            string answer = game.CreateCorrectAnswer(randomGenerator);
+
+            // Assert
+            Assert.IsTrue(answer.Length == 5, "Not 4 characters");
+        }
+        [TestMethod]
+        [DataRow("24251", "2451")]
+        [DataRow("42329", "4239")]
+        public void CreateCorrectAnswerTest(string randomNumber, string expectedAnswer)
+        {
+            // Arrange
+            MooGame.Business.MooGame game = new();
+            List<int> ints = new List<int>();
+            for(int i = 0; i < randomNumber.Length; i++)
+            {
+                int num = Convert.ToInt32(randomNumber[i].ToString());
+                ints.Add(num);
+            }
+            // Act
+            int[] df = [2, 4, 2, 5, 1];
+            IRandom randomGenerator = new MockRandom(ints);
+            string actualAnswer = game.CreateCorrectAnswer(randomGenerator);
+            // Assert
+            Assert.AreEqual(expectedAnswer, actualAnswer, "Failed to create intended answer");
         }
     }
 }
