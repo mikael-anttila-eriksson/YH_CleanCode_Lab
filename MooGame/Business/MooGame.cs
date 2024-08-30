@@ -75,5 +75,55 @@ namespace MooGame.Business
             result = bulls + cows;
             return result;
         }
-    }
+        public bool ValidateInput(string guess, out string message)
+        {
+			bool step1 = ValidateGuess(guess, out message);
+            if (!step1)
+            {
+                return false;
+            }
+
+			bool step2 = IsUniqueDigits(guess, out message);
+            if (!step2)
+            {
+                return false;
+            }
+            return true;
+		}
+		public bool ValidateGuess(string guess, out string message)
+		{
+            message = string.Empty;
+
+			if (string.IsNullOrEmpty(guess))
+			{
+				message = "You did not make a guess.";
+				return false;
+			}
+			if (guess.Length != 4)
+			{
+				message = "Your guess must have a length of 4.";
+				return false;
+			}
+			if (!int.TryParse(guess, out _))
+			{
+				message = "Your guess must contain only digits.";
+				return false;
+			}
+			return true;
+		}
+		public bool IsUniqueDigits(string guess, out string message)
+		{
+            message = string.Empty;
+
+			var uniqueDigits = guess.Distinct();
+			int count = uniqueDigits.Count();
+
+			if (uniqueDigits.Count() != 4)
+			{
+				message = "Each digit in your guess should be unique.";
+				return false;
+			}
+			return true;
+		}
+	}
 }
