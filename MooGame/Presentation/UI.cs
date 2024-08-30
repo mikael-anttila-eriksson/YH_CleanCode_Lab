@@ -8,7 +8,7 @@ namespace MooGame.Presentation;
 
 public class UI : IUI
 {
-    public string Read()
+    public string ReadLine()
     {
         return Console.ReadLine();
     }
