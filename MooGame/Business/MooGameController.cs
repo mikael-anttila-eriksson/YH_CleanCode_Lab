@@ -15,17 +15,20 @@ namespace MooGame.Business
     {
         private IUI _console;
         private MooGame _mooGame;
+        private FileManager _fileManager;
         public MooGameController(IUI console)
         {
             _console = console;
             _mooGame = new MooGame();
+            _fileManager = new FileManager();
+            //ReadData();
         }
 
         public void Run()
         {
             bool playOn = true;
             _console.WriteLine("Enter your username:\n");
-            string name = Console.ReadLine();
+            string name = _console.Read();
 
             while (playOn)
             {
@@ -46,7 +49,7 @@ namespace MooGame.Business
 
                 int numGuesses = GameTurn(correctAnswer);
 
-                SavePlayerScore(name, numGuesses);
+                _fileManager.SavePlayerScore(name, numGuesses);
                 ShowTopList();
                 _console.WriteLine("Correct, it took " + numGuesses + " guesses\nContinue? Y/N");
 
@@ -55,14 +58,7 @@ namespace MooGame.Business
                     playOn = false;
                 }
             }
-        }
-
-        private void SavePlayerScore(string name, int numGuesses)
-        {
-            StreamWriter output = new StreamWriter("result.txt", append: true);
-            output.WriteLine(name + "#&#" + numGuesses);
-            output.Close();
-        }
+        }       
 
         private int GameTurn(string correctAnswer)
         {
@@ -76,9 +72,8 @@ namespace MooGame.Business
                 _console.Write("Your guess: ");
 
                 string guess = Console.ReadLine();
-                guess = guess.Replace(" ", string.Empty);
-
-                if (ValidateGuess(guess) && IsUniqueDigits(guess))
+                guess = guess.Replace(" ", string.Empty);                
+                if (_mooGame.ValidateInput(guess, out string message))
                 {
                     bbcc = _mooGame.EvaluateBullsCows(correctAnswer, guess);
                     _console.WriteLine("Result: " + bbcc + "\n");
@@ -86,43 +81,13 @@ namespace MooGame.Business
                 }
                 else
                 {
+                    _console.WriteLine(message);
                     _console.WriteLine("Try again.");
                 }
             }
             return nGuess;
-        }
-
-        private bool ValidateGuess(string guess)
-        {
-            if (string.IsNullOrEmpty(guess))
-            {
-                _console.WriteLine("You did not make a guess.");
-                return false;
-            }
-            if (guess.Length != 4)
-            {
-                _console.WriteLine("Your guess must have a length of 4.");
-                return false;
-            }
-            if (!int.TryParse(guess, out _))
-            {
-                _console.WriteLine("Your guess must contain only digits.");
-                return false;
-            }
-            return true;
-        }
-        private bool IsUniqueDigits(string guess)
-        {
-            var uniqueDigits = guess.Distinct();
-            int count = uniqueDigits.Count();
-
-            if (uniqueDigits.Count() != 4)
-            {
-                _console.WriteLine("Each digit in your guess should be unique.");
-                return false;
-            }
-            return true;
-        }
+        }       
+       
 
         static void ShowTopList()
         {
@@ -156,5 +121,19 @@ namespace MooGame.Business
             }
             input.Close();
         }
+       
+  //      public List<PlayerData> Logic(List<PlayerData> players)
+  //      {
+		//	return players = players.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
+		//}
+        public void ShowList(List<PlayerData> players)
+        {
+			Console.WriteLine("Player   games average");
+			foreach (PlayerData p in players)
+			{
+				string str = string.Format("{0,-9}{1,5:D}{2,9:F2}", p.Name, p.NumGames, p.Average());
+				Console.WriteLine(str);
+			}			
+		}
     }
 }
