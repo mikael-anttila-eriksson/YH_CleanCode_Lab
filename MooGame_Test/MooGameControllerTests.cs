@@ -16,7 +16,7 @@ namespace MooGame_Test
 		public void MooGameControllerTest()
 		{
 			// Arrange
-			var ui = new UI();
+			var ui = new MockUI();
 			var gameController = new MooGameController(ui);
 
 			// Act
