@@ -10,18 +10,15 @@ namespace MooGame_Test.Mocks
 {
     public class MockUI : IUI
     {
-
         public string ReadLine()
         {
             Debug.WriteLine(nameof(ReadLine));
             return "";
         }
-
         public void Write(string text)
         {
             Debug.WriteLine(nameof(Write));
         }
-
         public void WriteLine(string text)
         {
             Debug.WriteLine(nameof(WriteLine));

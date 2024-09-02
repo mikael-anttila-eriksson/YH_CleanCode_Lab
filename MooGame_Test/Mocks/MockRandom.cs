@@ -9,18 +9,16 @@ namespace MooGame_Test.Mocks
 {
     public class MockRandom : IRandom
     {
-        private List<int> ints;
+        private List<int> _ints;
         
         private int index = 0;
         public MockRandom(List<int> ints)
         {
-
-            this.ints = ints;
-
+            this._ints = ints;
         }
         public int Next(int maxValue)
         {
-            int nextNumber = ints[index];
+            int nextNumber = _ints[index];
             index++;
             return nextNumber;
         }

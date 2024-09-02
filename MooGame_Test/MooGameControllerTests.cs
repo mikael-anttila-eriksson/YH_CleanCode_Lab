@@ -21,10 +21,10 @@ namespace MooGame_Test
             var ui = new MockUI();
 			//var game = new 
 			var randomGenerator = new MockRandom(ints);
-			var gameController = new MooGameController(ui, randomGenerator);
+			//var gameController = new MooGameController(ui, randomGenerator);
 
 			// Act
-			gameController.Run();
+			//gameController.Run();
 
 			// Assert
 			Assert.Fail();

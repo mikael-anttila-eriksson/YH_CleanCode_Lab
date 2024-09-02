@@ -9,6 +9,5 @@ namespace MooGame.Business
     public interface IRandom
     {
         int Next(int maxValue);
-
     }
 }

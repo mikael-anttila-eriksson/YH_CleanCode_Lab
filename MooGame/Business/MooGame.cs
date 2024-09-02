@@ -24,8 +24,7 @@ namespace MooGame.Business
 
         }
         public string CreateCorrectAnswer(IRandom randomGenerator)
-        {
-            //Random randomGenerator = new Random();
+        {            
             int randomNumberBetween0to9 = 10;
             string correctAnswer = "";
             for (int i = 0; i < 4; i++)

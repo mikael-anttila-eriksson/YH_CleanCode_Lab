@@ -23,14 +23,10 @@ namespace MooGame_Test
         {
             // Arrange
             MooGame.Business.MooGame mooGame = new MooGame.Business.MooGame();
-			
-            //string correctAnswer = "1234";
-			//string guess = "2835";
 
 			// Act
 			string actualOutput = mooGame.EvaluateBullsCows(correctAnswer, guess);
-            //string expectedOutput = "BC";
-
+            
             // Assert
             Assert.AreEqual(expectedOutput, actualOutput, "Incorrect evaluation.");
         }
@@ -64,10 +60,12 @@ namespace MooGame_Test
                 int num = Convert.ToInt32(randomNumber[i].ToString());
                 ints.Add(num);
             }
+
             // Act
             int[] df = [2, 4, 2, 5, 1];
             IRandom randomGenerator = new MockRandom(ints);
             string actualAnswer = game.CreateCorrectAnswer(randomGenerator);
+
             // Assert
             Assert.AreEqual(expectedAnswer, actualAnswer, "Failed to create intended answer");
         }

@@ -28,23 +28,9 @@ namespace MooGame.Data
 				while ((line = reader.ReadLine()) != null)
 				{
 					string[] nameAndScore = line.Split(new string[] { "," }, StringSplitOptions.TrimEntries);
-					playerString.Add(nameAndScore);
-					//$"{nameAndScore[0]}, {nameAndScore[1]}"
-					//string name = nameAndScore[0];
-					//int guesses = Convert.ToInt32(nameAndScore[1]);
-					//PlayerData playerData = new PlayerData(name, guesses);
-					//int positionInList = playerStatistics.IndexOf(playerData);
-					//if (positionInList < 0)
-					//{
-					//	playerStatistics.Add(playerData);
-					//}
-					//else
-					//{
-					//	playerStatistics[positionInList].Update(guesses);
-					//}
+					playerString.Add(nameAndScore);					
 				}				
 			};
-				
 			
 			return playerString;
 		}

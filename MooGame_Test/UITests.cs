@@ -34,7 +34,6 @@ namespace MooGame_Test
 			console.WriteLine("test");			
 
 			// Assert
-
 		}
 
 		[TestMethod()]
@@ -59,12 +58,6 @@ namespace MooGame_Test
 			console.PromptYesNo();
 
 			// Assert
-		}
-
-		[TestMethod()]
-		public void SecretCowLevelTest()
-		{
-			Assert.Fail();
-		}
+		}		
 	}
 }

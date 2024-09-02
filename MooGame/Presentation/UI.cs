@@ -20,7 +20,7 @@ public class UI : IUI
     {
         Console.Write(text);
     }
-    public bool PromptYesNo() // our cool thing
+    public bool PromptYesNo() 
     {
         string answer = "";
 
@@ -67,8 +67,7 @@ public class UI : IUI
             "                  ||----w |",
             "                  ||     ||"
         };
-
-        // Loop through each line and print it
+        
         foreach (string line in lines)
         {
             Console.WriteLine(line);
