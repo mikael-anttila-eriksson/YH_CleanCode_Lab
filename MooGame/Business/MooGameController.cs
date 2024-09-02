@@ -13,49 +13,48 @@ namespace MooGame.Business
     /// </summary>
     public class MooGameController
     {
-        private IUI _UiHandler;
+        private IUI _uiHandler;
         private IMooGame _mooGame;
         private IFileManager _fileManager;
         private IRandom _randomGenerator;
         public MooGameController(IUI uiHandler, IMooGame game, IFileManager manager, IRandom random)
         {
-            _UiHandler = uiHandler;
+            _uiHandler = uiHandler;
             _mooGame = game;
             _fileManager = manager;
-            _randomGenerator = random;
-            //ReadData();
+            _randomGenerator = random;            
         }
 
         public void Run()
         {
             bool playOn = true;
-            _UiHandler.WriteLine("Enter your username:\n");
-            string name = _UiHandler.ReadLine();
+            _uiHandler.WriteLine("Enter your username:\n");
+            string name = _uiHandler.ReadLine();
 
             while (playOn)
             {                
                 string correctAnswer = _mooGame.CreateCorrectAnswer(_randomGenerator);
 
-                _UiHandler.WriteLine("New game:\n");
+                _uiHandler.WriteLine("New game:\n");
 
-                _UiHandler.WriteLine("Do you want to practice? Y/N");
+                _uiHandler.WriteLine("Do you want to practice? Y/N");
 
-                if (_UiHandler.PromptYesNo())
+                if (_uiHandler.PromptYesNo())
                 {
-                    _UiHandler.WriteLine("For practice, number is: " + correctAnswer + "\n");
+                    _uiHandler.WriteLine("For practice, number is: " + correctAnswer + "\n");
                 }
                 else
                 {
-                    _UiHandler.WriteLine("Real game");
+                    _uiHandler.WriteLine("Real game");
                 }
 
                 int numGuesses = GameTurn(correctAnswer);
 
-                _fileManager.SavePlayerScore(name, numGuesses, "result.txt");
+                _fileManager.SavePlayerScore(name, numGuesses, "result.txt");                
                 ShowTopList();
-                _UiHandler.WriteLine("Correct, it took " + numGuesses + " guesses\nContinue? Y/N");
+                _uiHandler.WriteLine("Correct, it took " + numGuesses + " guesses\nContinue? Y/N");
 
-                if (!_UiHandler.PromptYesNo())
+                if (!_uiHandler.PromptYesNo())
                 {
                     playOn = false;
                 }
@@ -64,71 +63,38 @@ namespace MooGame.Business
 
         private int GameTurn(string correctAnswer)
         {
-            _UiHandler.WriteLine("Make a guess!");
+            _uiHandler.WriteLine("Make a guess!");
 
             int nGuess = 0;
             string bbcc = string.Empty;
 
             while (bbcc != "BBBB")
             {
-                _UiHandler.Write("Your guess: ");
+                _uiHandler.Write("Your guess: ");
 
                 string guess = Console.ReadLine();
                 guess = guess.Replace(" ", string.Empty);                
                 if (_mooGame.ValidateInput(guess, out string message))
                 {
                     bbcc = _mooGame.EvaluateBullsCows(correctAnswer, guess);
-                    _UiHandler.WriteLine("Result: " + bbcc + "\n");
+                    _uiHandler.WriteLine("Result: " + bbcc + "\n");
                     nGuess++;
                 }
                 else
                 {
-                    _UiHandler.WriteLine(message);
-                    _UiHandler.WriteLine("Try again.");
+                    _uiHandler.WriteLine(message);
+                    _uiHandler.WriteLine("Try again.");
                 }
             }
             return nGuess;
-        }       
-       
+        }        
 
-        static void ShowTopList()
-        {
-            StreamReader input = new StreamReader("result.txt");
-            List<PlayerData> results = new List<PlayerData>();
-            string line;
-            while ((line = input.ReadLine()) != null)
-            {
-                string[] nameAndScore = line.Split(new string[] { "#&#" }, StringSplitOptions.None);
-                string name = nameAndScore[0];
-                int guesses = Convert.ToInt32(nameAndScore[1]);
-                PlayerData playerData = new PlayerData(name, guesses);
-                int positionInList = results.IndexOf(playerData);
-                if (positionInList < 0)
-                {
-                    results.Add(playerData);
-                }
-                else
-                {
-                    results[positionInList].Update(guesses);
-                }
-
-
-            }
-            results.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
-            Console.WriteLine("Player   games average");
-            foreach (PlayerData p in results)
-            {
-                string str = string.Format("{0,-9}{1,5:D}{2,9:F2}", p.Name, p.NumGames, p.Average());
-                Console.WriteLine(str);
-            }
-            input.Close();
-        }
-
-        //public List<PlayerData> Logic(List<PlayerData> players)
-        //{
-        //    return players = players.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
-        //}
-        private void ReadPlayers(string path)
+        public List<PlayerData> SortByLowestAverage(List<PlayerData> players)
+        {            
+            players.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
+            return players;
+		}
+        public List<PlayerData> ReadPlayers(string path)
         {
             List<PlayerData> playerStatistics = new List<PlayerData>();
             List<string[]> playerData = _fileManager.ReadData(path);
@@ -149,14 +115,17 @@ namespace MooGame.Business
                     playerStatistics[positionInList].Update(guesses);
                 }
             }
+            return playerStatistics;
         }
-        public void ShowList(List<PlayerData> players)
+        public void ShowTopList()
         {
-			Console.WriteLine("Player   games average");
+            List<PlayerData> players = ReadPlayers("result.txt");
+            players = SortByLowestAverage(players);
+			_uiHandler.WriteLine("Player   games average");
 			foreach (PlayerData p in players)
 			{
-				string str = string.Format("{0,-9}{1,5:D}{2,9:F2}", p.Name, p.NumGames, p.Average());
-				Console.WriteLine(str);
+				string result = string.Format("{0,-9}{1,5:D}{2,9:F2}", p.Name, p.NumGames, p.Average());
+				_uiHandler.WriteLine(result);
 			}			
 		}
     }
