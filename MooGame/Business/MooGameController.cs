@@ -15,9 +15,9 @@ namespace MooGame.Business
     {
         private IUI _UiHandler;
         private IMooGame _mooGame;
-        private IFileManger _fileManager;
+        private IFileManager _fileManager;
         private IRandom _randomGenerator;
-        public MooGameController(IUI uiHandler, IMooGame game, IFileManger manager, IRandom random)
+        public MooGameController(IUI uiHandler, IMooGame game, IFileManager manager, IRandom random)
         {
             _UiHandler = uiHandler;
             _mooGame = game;
@@ -51,7 +51,7 @@ namespace MooGame.Business
 
                 int numGuesses = GameTurn(correctAnswer);
 
-                _fileManager.SavePlayerScore(name, numGuesses);
+                _fileManager.SavePlayerScore(name, numGuesses, "result.txt");
                 ShowTopList();
                 _UiHandler.WriteLine("Correct, it took " + numGuesses + " guesses\nContinue? Y/N");
 
@@ -128,6 +128,28 @@ namespace MooGame.Business
         //{
         //    return players = players.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
         //}
+        private void ReadPlayers(string path)
+        {
+            List<PlayerData> playerStatistics = new List<PlayerData>();
+            List<string[]> playerData = _fileManager.ReadData(path);
+            string name;
+            int guesses = 0;
+            foreach (string[] row in playerData)
+            {
+                name = row[0];
+                guesses = Convert.ToInt32(row[1]);
+                PlayerData player = new PlayerData(name, guesses);
+                int positionInList = playerStatistics.IndexOf(player);
+                if (positionInList < 0)
+                {
+                    playerStatistics.Add(player);
+                }
+                else
+                {
+                    playerStatistics[positionInList].Update(guesses);
+                }
+            }
+        }
         public void ShowList(List<PlayerData> players)
         {
 			Console.WriteLine("Player   games average");

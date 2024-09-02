@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MooGame.Data
 {
-    public interface IFileManger
+    public interface IFileManager
     {
-        void SavePlayerScore(string name, int numGuesses);
-        List<PlayerData> ReadData();
+        void SavePlayerScore(string name, int numGuesses, string path);
+        List<string[]> ReadData(string path);
     }
 }
