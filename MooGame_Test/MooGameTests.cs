@@ -45,7 +45,7 @@ namespace MooGame_Test
             string answer = game.CreateCorrectAnswer(randomGenerator);
 
             // Assert
-            Assert.IsTrue(answer.Length == 5, "Not 4 characters");
+            Assert.IsTrue(answer.Length == 4, "Not 4 characters");
         }
         [TestMethod]
         [DataRow("24251", "2451")]

@@ -27,7 +27,7 @@ namespace MooGame.Business
         {            
             int randomNumberBetween0to9 = 10;
             string correctAnswer = "";
-            for (int i = 0; i < 4; i++)
+            for (int i = START; i <= END; i++)
             {
                 int random = randomGenerator.Next(randomNumberBetween0to9);
                 string randomDigit = "" + random;
@@ -53,7 +53,7 @@ namespace MooGame.Business
                     int iGoal = 0;
                     bool int1 = int.TryParse(correctAnswer[_position].ToString(), out iGoal);
                     int jGuess = 0;
-                    bool int2 = int.TryParse(guess[positionToEvaluate].ToString(), out jGuess);
+                    bool int2 = int.TryParse(guess[positionToEvaluate].ToString(), out jGuess); 
                     if(!int1 || !int2)
                     {
                         return "error";

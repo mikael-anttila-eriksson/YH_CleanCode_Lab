@@ -52,8 +52,9 @@ namespace MooGame.Business
 
                 _fileManager.SavePlayerScore(name, numGuesses, "result.txt");                
                 ShowTopList();
-                _uiHandler.WriteLine("Correct, it took " + numGuesses + " guesses\nContinue? Y/N");
+                _uiHandler.WriteLine("Correct, it took " + numGuesses + " guesses");
 
+                _uiHandler.WriteLine("Continue? Y/N");
                 if (!_uiHandler.PromptYesNo())
                 {
                     playOn = false;
