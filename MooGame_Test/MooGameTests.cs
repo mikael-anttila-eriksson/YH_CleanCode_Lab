@@ -62,7 +62,6 @@ namespace MooGame_Test
             }
 
             // Act
-            int[] df = [2, 4, 2, 5, 1];
             IRandom randomGenerator = new MockRandom(ints);
             string actualAnswer = game.CreateCorrectAnswer(randomGenerator);
 

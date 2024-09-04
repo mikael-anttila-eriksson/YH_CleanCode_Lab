@@ -73,7 +73,7 @@ namespace MooGame.Business
             {
                 _uiHandler.Write("Your guess: ");
 
-                string guess = Console.ReadLine();
+                string guess = _uiHandler.ReadLine();
                 guess = guess.Replace(" ", string.Empty);                
                 if (_mooGame.ValidateInput(guess, out string message))
                 {
@@ -90,12 +90,12 @@ namespace MooGame.Business
             return nGuess;
         }        
 
-        public List<PlayerData> SortByLowestAverage(List<PlayerData> players)
+        private List<PlayerData> SortByLowestAverage(List<PlayerData> players)
         {            
             players.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
             return players;
 		}
-        public List<PlayerData> ReadPlayers(string path)
+        private List<PlayerData> ReadPlayers(string path)
         {
             List<PlayerData> playerStatistics = new List<PlayerData>();
             List<string[]> playerData = _fileManager.ReadData(path);
@@ -118,7 +118,7 @@ namespace MooGame.Business
             }
             return playerStatistics;
         }
-        public void ShowTopList()
+        private void ShowTopList()
         {
             List<PlayerData> players = ReadPlayers("result.txt");
             players = SortByLowestAverage(players);
